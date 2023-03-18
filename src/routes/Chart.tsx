@@ -22,6 +22,8 @@ export const LoadingDiv = styled.div`
   display: flex;
   height: 100px;
   align-items: center;
+  color: ${(props) => props.theme.textColor};
+
   justify-content: center;
   span {
     font-size: 25px;

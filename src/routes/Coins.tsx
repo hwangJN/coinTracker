@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isDarkAtom } from "../atoms";
 
 const Title = styled.h1`
@@ -23,6 +23,7 @@ const Header = styled.header`
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
+  position: relative;
 `;
 const CoinList = styled.ul``;
 const Coin = styled.li`
@@ -49,11 +50,35 @@ const Coin = styled.li`
 const Loader = styled.div`
   text-align: center;
   display: block;
+  color: ${(props) => props.theme.textColor};
 `;
 const Img = styled.img`
   width: 35px;
   height: 35px;
   margin-right: 15px;
+`;
+
+const ToggleBtn = styled.button`
+  background-color: ${(props) => props.theme.textColor};
+  height: 28px;
+  position: absolute;
+  width: 50px;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 20px;
+`;
+
+const Circle = styled.span<{ isDark: boolean }>`
+  position: absolute;
+  top: 50%;
+  left: ${({ isDark }) => (isDark ? "calc(100% - 21px)" : "3px")};
+  width: 18px;
+  transform: translateY(-50%);
+  height: 18px;
+  border-radius: 50%;
+  background-color: ${({ isDark }) => (isDark ? "black" : "white")};
+  transition: left 0.2s ease-in-out;
 `;
 interface ICoin {
   id: string;
@@ -66,6 +91,7 @@ interface ICoin {
 }
 
 function Coins() {
+  // 기존 fetch
   // const [coin, setCoin] = useState<ICoin[]>([]);
   // const [loading, setLoading] = useState(true);
   // useEffect(() => {
@@ -79,7 +105,9 @@ function Coins() {
   // }, []);
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
   const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const isDark = useRecoilValue(isDarkAtom);
   const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
+
   return (
     <Container>
       {/*Helmet은 html의 head로 direct link */}
@@ -88,7 +116,9 @@ function Coins() {
       </Helmet>
       <Header>
         <Title>COIN</Title>
-        <button onClick={toggleDarkAtom}>Toggle Mode</button>
+        <ToggleBtn onClick={toggleDarkAtom}>
+          <Circle isDark={isDark} />
+        </ToggleBtn>
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>
