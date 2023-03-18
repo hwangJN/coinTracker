@@ -2,7 +2,8 @@ import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
 import styled from "styled-components";
-import { theme } from "../theme";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 interface chatProps {
   coinId: string;
@@ -29,6 +30,7 @@ export const LoadingDiv = styled.div`
 `;
 //data: data?.map((price) => Number(price.close)) as number[]
 function Chart({ coinId }: chatProps) {
+  const isDark = useRecoilValue(isDarkAtom);
   const { isLoading, data } = useQuery<IData[]>(
     ["ohlcv"],
     () => fetchCoinHistory(coinId),
@@ -61,7 +63,7 @@ function Chart({ coinId }: chatProps) {
           //type: "candlestick",
           options={{
             theme: {
-              mode: "dark",
+              mode: isDark ? "dark" : "light",
             },
             chart: {
               type: "candlestick",
@@ -71,15 +73,6 @@ function Chart({ coinId }: chatProps) {
                 show: false,
               },
               background: "transparent",
-              dropShadow: {
-                enabled: true,
-                enabledOnSeries: undefined,
-                top: 10,
-                left: 10,
-                blur: 6,
-                color: "#000",
-                opacity: 0.45,
-              },
               animations: {
                 enabled: true,
                 easing: "easein",

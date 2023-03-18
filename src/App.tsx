@@ -1,11 +1,12 @@
-import React from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import React, { useState } from "react";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
 import { ReactQueryDevtools } from "react-query/devtools";
-
+import { darkTheme, lightTheme } from "./theme";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atoms";
 //style-components의 전역 스타일
 const GlobalStyle = createGlobalStyle`
-//@import url('');
 
   html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -38,7 +39,7 @@ footer, header, hgroup, main, menu, nav, section {
 }
 body {
   line-height: 1;
-
+  background-color:${(props) => props.theme.bgColor};
 }
 menu, ol, ul {
   list-style: none;
@@ -55,28 +56,21 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-*{
-  box-sizing:border-box ;
-}
-body{
-  font-weight: 300;
-  line-height: 1.2;
-  font-family: 'Source Sans Pro', sans-serif;
-  background-color: ${(props) => props.theme.bgColor};
-  color:${(props) => props.theme.textColor}
-}
 a{
   text-decoration: none;
-  color: inherit; //부모로부터 가져옴
+  color:black;
 }
 `;
 
 function App() {
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
-      <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools initialIsOpen={true} />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <Router />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </ThemeProvider>
     </>
   );
 }

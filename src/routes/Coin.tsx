@@ -16,6 +16,8 @@ import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { isDarkAtom } from "../atoms";
+import { useRecoilValue } from "recoil";
 const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
   font-size: 40px;
@@ -52,6 +54,7 @@ const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
   span:first-child {
     font-size: 10px;
     font-weight: 400;
@@ -62,6 +65,7 @@ const OverviewItem = styled.div`
 const Description = styled.p`
   margin: 20px 15px;
   line-height: 33px;
+  color: ${(props) => props.theme.textColor};
 `;
 const Tabs = styled.div`
   display: grid;
@@ -79,11 +83,11 @@ const Tab = styled.span<{ isActive: boolean }>`
   background-color: rgba(0, 0, 0, 0.5);
   padding: 7px 0px;
   border-radius: 10px;
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
   font-weight: ${(props) => (props.isActive ? "600" : "500")};
+
   a {
     display: block;
+    color: ${(props) => (props.isActive ? props.theme.accentColor : "white")};
   }
 `;
 
@@ -194,6 +198,7 @@ function Coin() {
     }
   );
   const loading = infoLoading || tickersLoading;
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <div>
       <Container>
@@ -205,7 +210,11 @@ function Coin() {
         <Header>
           <Link to="/">
             <BackIcon>
-              <FontAwesomeIcon icon={faArrowLeft} size="2x" />
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                size="2x"
+                color={isDark ? "white" : "black"}
+              />
             </BackIcon>
           </Link>
 
@@ -228,7 +237,7 @@ function Coin() {
               </OverviewItem>
               <OverviewItem>
                 <span>Price</span>
-                <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
+                <span>${tickersData?.quotes?.USD?.price?.toFixed(3)}</span>
               </OverviewItem>
             </Overview>
             <Description>{infoData?.description}</Description>
