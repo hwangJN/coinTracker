@@ -15,9 +15,9 @@ const PercentSpan = styled.div<percentColor>`
   font-size: 22px;
 `;
 const PercentChangeDiv = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.boxColor};
   color: ${(props) => props.theme.textColor};
-  color: white;
+  color: ${(props) => props.theme.textColor};
   margin-bottom: 5px;
   height: 90px;
   border-radius: 10px;

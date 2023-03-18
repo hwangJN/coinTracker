@@ -45,8 +45,9 @@ const Loader = styled.div`
 
 const Overview = styled.div`
   display: flex;
+  box-shadow: ${(props) => props.theme.boxShadow};
   justify-content: space-around;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.boxColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -54,7 +55,7 @@ const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: white;
+  color: ${(props) => props.theme.textColor};
   span:first-child {
     font-size: 10px;
     font-weight: 400;
@@ -80,14 +81,15 @@ const Tab = styled.span<{ isActive: boolean }>`
   font-size: 12px;
   font-weight: 400;
   line-height: 30px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.boxColor};
   padding: 7px 0px;
   border-radius: 10px;
-  font-weight: ${(props) => (props.isActive ? "600" : "500")};
-
+  font-weight: ${(props) => (props.isActive ? "800" : "700")};
+  box-shadow: ${(props) => props.theme.boxShadow};
   a {
     display: block;
-    color: ${(props) => (props.isActive ? props.theme.accentColor : "white")};
+    color: ${(props) =>
+      props.isActive ? props.theme.accentColor : props.theme.textColor};
   }
 `;
 
