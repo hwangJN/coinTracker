@@ -1,3 +1,3 @@
 # Coin Tracker
-React Query practice
+practice React Query & Typescript
 
